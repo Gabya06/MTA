@@ -77,11 +77,8 @@ old_data = old_data.drop(times, axis = 1)
 
 _4th of July 2016 - what station was busyest?_
 
-42nd street Port Authority had the most turnstile activity, followed by 57th st 7th ave, 23rd st, Canal st and 125th street; and, in particular Unit R011 was busyest.
 ```python
 # 42 ST-PORT AUTH was the busyest around 4th of july 2016
-print "ON 4TH OF JULY 2017, THE BUSYEST STATIONS WERE: " 
-print
 print new_data[new_data.DATE == '07/04/2016'].groupby('STATION').turnstile_busyness.sum().nlargest(5)
 ```
 
@@ -109,3 +106,4 @@ turnstile_yearly = pd.DataFrame(new_data.groupby(['YEAR','MONTH'])['turnstile_bu
 # plot yearly data for the last 3 years
 turnstile_yearly.plot(kind = 'bar', figsize = (12,6), title = 'Yearly turnstile busyness')
 ```
+![turnstyle_img](/images/turnstyle_img.png)
