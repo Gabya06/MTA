@@ -184,7 +184,9 @@ _ = plot_learning_curve(estimator, title, X, y, ylim=(0.7, 1.01), cv=10, n_jobs=
  ![cv_learningcurves](/images/cv_learningcurves.png)
 
 Note: I found this helpful function to produce the plot for cross-validation:
+
 http://scikit-learn.org/stable/auto_examples/model_selection/plot_learning_curve.html
+
 ```python
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
                         n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5)):
