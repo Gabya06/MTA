@@ -122,3 +122,33 @@ title='Turnstile Busyness in the last 3 years')
 plt.show()
 ```
 ![turnstyle_img_yearmonth](/images/turnstyle_img_yearmonth.png)
+
+
+```python
+fig, axes = plt.subplots(nrows =1, ncols=4, figsize = (16,6), sharex=True, sharey=True)
+fig.subplots_adjust(hspace=.8, wspace=.5)
+for idx, s in enumerate(sample_stations[0:4]):
+    station_dat = new_data[new_data.STATION ==s].groupby(['MONTH'])
+    station_dat = station_dat['turnstile_busyness'].sum()
+    plt_s = station_dat.plot(kind = 'bar', subplots=False, stacked = True, legend=None, color ='coral',
+                             title = s, ax = axes[idx] )
+
+    labels = [item.get_text() for item in axes[idx].get_xticklabels()]
+    axes[idx].set_xticklabels(labels, rotation = 0)
+    axes[idx].set_xlabel("")
+plt.show()
+
+fig, axes = plt.subplots(nrows =1, ncols=4, figsize = (16,6), sharex=True, sharey=True)
+fig.subplots_adjust(hspace=.8, wspace=.75)
+for idx, s in enumerate(sample_stations[4:8]):
+    station_dat = new_data[new_data.STATION ==s].groupby(['MONTH'])
+    station_dat = station_dat['turnstile_busyness'].sum()
+    plt_s = station_dat.plot(kind = 'bar', subplots=False, stacked = True, legend=None, color ='coral',
+                             title = s , ax = axes[idx] )
+
+    labels = [item.get_text() for item in axes[idx].get_xticklabels()]
+    axes[idx].set_xticklabels(labels, rotation = 0)
+    axes[idx].set_xlabel("")
+plt.show()
+```
+![turnstyle_samples](/images/turnstyle_samples.png)
