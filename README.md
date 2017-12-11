@@ -107,3 +107,18 @@ turnstile_yearly = pd.DataFrame(new_data.groupby(['YEAR','MONTH'])['turnstile_bu
 turnstile_yearly.plot(kind = 'bar', figsize = (12,6), title = 'Yearly turnstile busyness')
 ```
 ![turnstyle_img](/images/turnstyle_img.png)
+
+_When are turstiles least active in the last year?_
+
+If we look at the data from the last 3 years on a monthly basis, turnstile busyness has increased, but there are certainly also dips in the trend.
+In terms of least activity in the last year, we can see that Path WTC has the least turnstyle busyness actvitiy, and February was the least busyest month. While June has the least turnstile business, the data collected is not quite complete for June, so we should look at the following month with smallest number of exits and entries.
+In looking at the stations with turnstile busyness falling in the bottom 5%, we can see that there has been decreasing activity everywhere. These stations have had decreased turnstile entries and exists. In particular, the station with the highest decrease in activty in 2017 was Spring street, followed by other stations that also showed a percentage decrease in usage. Also, there are many stations not operating to full capacity such as: WENTY THIRD ST, PATH WTC, 14TH STREET, FLUSHING AV, NEWARK HM HE,LACKAWANNA,47-50 STS ROCK,CANARSIE-ROCKAW (which showed up several times as having low turnstile activity, and ROOSEVELT ISLND. Furthermore, I sampled a few stations and produced plots of yearly trends by station and noticed that there are many stations that are not used to capacity in comparison with other more popular ones. In terms of least busyest days, there are many days in January which were the least busy, but the day that had the fewest entries and exists was in March.
+
+```python
+# in looking at the last 3 years turnstile busyness has been pretty consistent
+fig, ax = plt.subplots(ncols=1, nrows=1, figsize = (10,6))
+pd.DataFrame(new_data.groupby(['YEAR','MONTH'])['turnstile_busyness'].sum()).plot(kind = 'bar', cmap='cool', ax=ax,
+title='Turnstile Busyness in the last 3 years')
+plt.show()
+```
+![turnstyle_img_yearmonth](/images/turnstyle_img_yearmonth.png)
