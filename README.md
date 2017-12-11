@@ -170,6 +170,18 @@ lm.fit(X_train, y_train)
 print "Linear Regression Model Score on test set",  lm.score(X_test, y_test)
 ```
 Linear Regression Model Score on test set 0.903015614972
+ 
+ To produce the cross-validation plot:
+ ```python
+ title = "Linear Regression 10-fold cross validation"
+# Cross validation with 100 iterations to get smoother mean test and train score curves, 
+# each with 20% data randomly selected as a validation set.
+cv = ShuffleSplit(n =4, test_size=.2, random_state=0, n_iter=100)
+
+estimator = make_pipeline(RobustScaler(), LinearRegression())
+_ = plot_learning_curve(estimator, title, X, y, ylim=(0.7, 1.01), cv=10, n_jobs=-1)
+ ```
+ ![cv_learningcurves](/images/cv_learningcurves.png)
 
 Note: I found this helpful function to produce the plot for cross-validation:
 ```python
@@ -242,15 +254,3 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
     plt.legend(loc="best")
     return plt
  ```
- 
- To produce the cross-validation plot:
- ```python
- title = "Linear Regression 10-fold cross validation"
-# Cross validation with 100 iterations to get smoother mean test and train score curves, 
-# each with 20% data randomly selected as a validation set.
-cv = ShuffleSplit(n =4, test_size=.2, random_state=0, n_iter=100)
-
-estimator = make_pipeline(RobustScaler(), LinearRegression())
-_ = plot_learning_curve(estimator, title, X, y, ylim=(0.7, 1.01), cv=10, n_jobs=-1)
- ```
- ![cv_learningcurves](/images/cv_learningcurves.png)
