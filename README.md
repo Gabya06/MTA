@@ -76,6 +76,7 @@ old_data = old_data.drop(times, axis = 1)
 ## Data Exploration & Visualization
 
 _4th of July 2016 - what station was busyest?_
+
 42nd street Port Authority had the most turnstile activity, followed by 57th st 7th ave, 23rd st, Canal st and 125th street; and, in particular Unit R011 was busyest.
 ```python
 # 42 ST-PORT AUTH was the busyest around 4th of july 2016
@@ -83,8 +84,6 @@ print "ON 4TH OF JULY 2017, THE BUSYEST STATIONS WERE: "
 print
 print new_data[new_data.DATE == '07/04/2016'].groupby('STATION').turnstile_busyness.sum().nlargest(5)
 ```
-
-ON 4TH OF JULY 2017, THE BUSYEST STATIONS WERE: 
 
 | Station            | Turnstile busyness |
 |------------------- |:--------------:|
