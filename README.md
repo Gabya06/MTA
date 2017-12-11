@@ -153,3 +153,20 @@ plt.show()
 ```
 ![turnstyle_samples](/images/turnstyle_samples.png)
 ![turnstyle_samples_2](/images/turnstyle_samples_2.png)
+
+## Linear Regression Model
+For predicting the number of exits, I used linear regression. I used a training set of 90% and 10% test, and the linear model performed quite well, scoring 90%. Initially I ran linear regression only on the "new" data because operating on the entire dataset took quite a lot of time and I wanted to quickly get a hint on the model performance. Even though I added more data points, the model did not improve much. Unfortunately in this situation we do not have a large set of features to chose from and predicting the number of exits is more or less based on the control area, the time, date, and mostly only number of entries. Both models - the one on only new data and the one on the entire data perform quite well, but I do think it could do better if we added more features.
+
+```python
+# assign predictors and response
+X = model_data.drop(['EXITS'],axis=1)
+y = model_data.EXITS
+
+# split data into training and test set
+X_train, X_test, y_train, y_test = train_test_split(scale(X), y, test_size=0.10, random_state=1)
+lm = LinearRegression()
+# fit linear regression model
+lm.fit(X_train, y_train)
+print "Linear Regression Model Score on test set",  lm.score(X_test, y_test)
+```
+Linear Regression Model Score on test set 0.903015614972
