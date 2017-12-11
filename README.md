@@ -152,3 +152,4 @@ for idx, s in enumerate(sample_stations[4:8]):
 plt.show()
 ```
 ![turnstyle_samples](/images/turnstyle_samples.png)
+![turnstyle_samples_2](/images/turnstyle_samples_2.png)
