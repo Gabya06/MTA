@@ -44,4 +44,31 @@ def combine_urls(date_range,out_file,mta_data_type):
 ```
 
 ## Data Cleaning
-Data cleaning involving standardizing  data to the same format. I changed the format of the old data to match that of the new data. The old data from before 10/18/2014 was in a long format, so I used the melt function to reformat these columns into one. I did this for the DESC, DATE, and TIME columns. I combined all the ENTRIES into one column and EXITS also, and created the turnstile busyness metric. I added the Station and LineName columns based on the mapping file online.
+Data cleaning involving standardizing the old and new data to the same format. The old data dating before 10/18/2014 was in a long format, so I change the format to match that of the new data. I reformated the Description, Date and Time columns, and combined all the Entries and Exits into one column, and created a turnstile busyness metric. This metric is the combination of total Entries + Exits. Also, I added the Station and LineName columns based on the mapping file online.
+
+```python
+# fill null values in numeric columns (entries & exists)
+entries = old_data.columns[old_data.columns.str.contains('ENTRIES')]
+old_data[entries] = old_data[entries].fillna(0.0)
+exits = old_data.columns[old_data.columns.str.contains('EXITS')]
+old_data[exits] = old_data[exits].fillna(0.0)
+# create column of total entries and exists
+old_data['ENTRIES'] = old_data[entries].sum(axis=1)
+old_data['EXITS'] = old_data[exits].sum(axis=1)
+old_data = old_data.drop(entries + exits, axis=1)
+# combine DESC
+desc = old_data.columns[old_data.columns.str.contains('DESC')]
+temp = pd.melt(frame=old_data, value_name='DESC', value_vars= desc.values.tolist())
+old_data['DESC'] = temp['DESC']
+old_data = old_data.drop(desc, axis = 1)
+# combine DATE
+dates = old_data.columns[old_data.columns.str.contains('DATE')]
+temp = pd.melt(frame=old_data,value_name='DATE', value_vars=dates.values.tolist())
+old_data['DATE'] = temp['DATE']
+old_data = old_data.drop(dates, axis = 1)
+# combine TIME
+times = old_data.columns[old_data.columns.str.contains('TIME')]
+temp = pd.melt(frame=old_data,value_name='TIME', value_vars= times.values.tolist())
+old_data['TIME'] = temp['TIME']
+old_data = old_data.drop(times, axis = 1)
+```
