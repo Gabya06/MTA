@@ -72,3 +72,41 @@ temp = pd.melt(frame=old_data,value_name='TIME', value_vars= times.values.tolist
 old_data['TIME'] = temp['TIME']
 old_data = old_data.drop(times, axis = 1)
 ```
+
+## Data Exploration & Visualization
+
+_4th of July 2016 - what station was busyest?_
+42nd street Port Authority had the most turnstile activity, followed by 57th st 7th ave, 23rd st, Canal st and 125th street; and, in particular Unit R011 was busyest.
+```python
+# 42 ST-PORT AUTH was the busyest around 4th of july 2016
+print "ON 4TH OF JULY 2017, THE BUSYEST STATIONS WERE: " 
+print
+print new_data[new_data.DATE == '07/04/2016'].groupby('STATION').turnstile_busyness.sum().nlargest(5)
+```
+
+ON 4TH OF JULY 2017, THE BUSYEST STATIONS WERE: 
+
+| Station            | Turnstile busyness |
+|------------------- |:--------------:|
+|  42 ST-PORT AUTH   | 8.514554e+10   |
+|    57 ST-7 AV      | 8.209046e+10   |
+|    23 ST           | 7.544203e+10   |
+|    CANAL ST        | 7.186917e+10   |
+|    125 ST          | 6.517888e+10   |
+
+
+_Turnstile busyness by month_
+In order to be able to look at the data on a monthly basis, we need to convert datatypes from strings to dates. From the chart, we can see that activity has increased in the last 3 years, but there are a few months where there are dips in turnstile busyness.
+
+```python
+# convert date from string
+new_data.DATE = new_data.DATE.map(lambda x: datetime.datetime.strptime(x, '%m/%d/%Y'))
+# add month
+new_data['MONTH'] = new_data.DATE.map(lambda x: x.month)
+# add year
+new_data['YEAR'] = new_data.DATE.map(lambda x: x.year)
+# turnstile busyness on any given month
+turnstile_yearly = pd.DataFrame(new_data.groupby(['YEAR','MONTH'])['turnstile_busyness'].sum())
+# plot yearly data for the last 3 years
+turnstile_yearly.plot(kind = 'bar', figsize = (12,6), title = 'Yearly turnstile busyness')
+```
