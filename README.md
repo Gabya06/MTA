@@ -1,11 +1,11 @@
 # MTA data science project
 
 ## Project Overview
-The goal of this project is to scrape the MTA website for data, perform analysis on the number of turnstyle entries and exits and predict the number of turnstyle entries and exitis.
+The goal of this project is to scrape the MTA website for data, perform analysis on the number of turnstyle entries and exits and predict the number of turnstyle exits.
 
 ## Data Scrapping and Processing 
-MTA turstile data was scrapped from http://web.mta.info/developers/turnstile.html. There were two different data formats used, one for data before 10/8/2014 and one for after. In my analysis, I named the dataset containing the old format old_data and the new format new_data. I created a function to iteratively read the online data and add it to a text file. At the end of the data scrapping phase there are two text files that were created, one for each type of format.
-After reading the data, I cleaned up the format of the old data to match the new one. Since there is a lot of data, processing this took quite some time. In hindsight, I should have created a sqlite database and manipulated the data there, and done some of the analysis there. After some time, I realized that there was a bit too much data to try and combine both the new and old datasets into one pandas dataframe. Since I had already done most of the work in pandas at that point, I focused most of my analysis on the new data to reduce the volume.
+MTA turstile data from 2011 to 2017 was scrapped from http://web.mta.info/developers/turnstile.html. There were two different data formats used, one for data prior to 10/8/2014 and one for after. I created a function to iteratively read the online data and add it to a text file. At the end of the data scrapping phase there are two text files that were created, one for each type of format.
+Part of the data cleaning was to standardize both dataset formats to match that of the new data since it was cleaner. The datasets were both large, data prior to 2014 is made up of over 5.7M rows (5,771,751) and data after 2014 had over 2.7M rows (2,652,245). Processing the data took quite some time. In hindsight, I should have made this a lot more efficient by creating  a database, manipulated and done some of the analysis there. After some time, I realized that there was a bit too much data to try and combine both the new and old datasets into one dataframe. Since I had already done most of the work in python using pandas, I focused most of my analysis on the new data to reduce the volume.
 
 ```python
 def combine_urls(date_range,out_file,mta_data_type):
@@ -111,8 +111,8 @@ turnstile_yearly.plot(kind = 'bar', figsize = (12,6), title = 'Yearly turnstile 
 _When are turstiles least active in the last year?_
 
 If we look at the data from the last 3 years on a monthly basis, turnstile busyness has increased, but there are certainly also dips in the trend.
-In terms of least activity in the last year, we can see that Path WTC has the least turnstyle busyness actvitiy, and February was the least busyest month. While June has the least turnstile business, the data collected is not quite complete for June, so we should look at the following month with smallest number of exits and entries.
-In looking at the stations with turnstile busyness falling in the bottom 5%, we can see that there has been decreasing activity everywhere. These stations have had decreased turnstile entries and exists. In particular, the station with the highest decrease in activty in 2017 was Spring street, followed by other stations that also showed a percentage decrease in usage. Also, there are many stations not operating to full capacity such as: WENTY THIRD ST, PATH WTC, 14TH STREET, FLUSHING AV, NEWARK HM HE,LACKAWANNA,47-50 STS ROCK,CANARSIE-ROCKAW (which showed up several times as having low turnstile activity, and ROOSEVELT ISLND. Furthermore, I sampled a few stations and produced plots of yearly trends by station and noticed that there are many stations that are not used to capacity in comparison with other more popular ones. In terms of least busyest days, there are many days in January which were the least busy, but the day that had the fewest entries and exists was in March.
+In terms of least activity in the last year, we can see that Path WTC has the least turnstyle busyness actvitiy, and February was the least busyest month. The Path WTC station has been closed and under repair for some time, so this would explain the lack of traffic there. It looks like June has the least turnstile business, but this is because the data collected is not quite complete for June, so we should look at the following month with smallest number of exits and entries.
+In looking at the stations with turnstile busyness falling in the bottom 5%, we can see that there has been decreasing activity everywhere. In particular, the station with the highest decrease in activty in 2017 was Spring street, followed by other stations that also showed a percentage decrease in usage. Also, there are many stations not operating to full capacity such as: WENTY THIRD ST, PATH WTC, 14TH STREET, FLUSHING AV, NEWARK HM HE,LACKAWANNA,47-50 STS ROCK,CANARSIE-ROCKAW and ROOSEVELT ISLND. To visualize this, I sampled a few stations and produced plots of yearly trends by station and noticed that there are many stations that are not used to capacity in comparison with other more popular ones. In terms of least busyest days, there are many days in January which were the least busy, but the day that had the fewest entries and exists was in March.
 
 ```python
 # in looking at the last 3 years turnstile busyness has been pretty consistent
@@ -155,7 +155,7 @@ plt.show()
 ![turnstyle_samples_2](/images/turnstyle_samples_2.png)
 
 ## Linear Regression Model
-For predicting the number of exits, I used linear regression. I used a training set of 90% and 10% test, and the linear model performed quite well, scoring 90%. Initially I ran linear regression only on the "new" data because operating on the entire dataset took quite a lot of time and I wanted to quickly get a hint on the model performance. Even though I added more data points, the model did not improve much. Unfortunately in this situation we do not have a large set of features to chose from and predicting the number of exits is more or less based on the control area, the time, date, and mostly only number of entries. Both models - the one on only new data and the one on the entire data perform quite well, but I do think it could do better if we added more features.
+I used linear regression to predict the number of exists. While only creating one training and test split of 90% and 10% data, the linear model performed surprisingly quite well without overfitting, scoring 90% on test data and close to 85% on training data. Performing 10 fold cross-validation gives an average score of 84%.
 
 ```python
 # assign predictors and response
