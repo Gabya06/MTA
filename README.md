@@ -92,6 +92,7 @@ print new_data[new_data.DATE == '07/04/2016'].groupby('STATION').turnstile_busyn
 
 
 _Turnstile busyness by month_
+
 In order to be able to look at the data on a monthly basis, we need to convert datatypes from strings to dates. From the chart, we can see that activity has increased in the last 3 years, but there are a few months where there are dips in turnstile busyness.
 
 ```python
